@@ -8,11 +8,16 @@ defmodule AdventOfCode.Helpers do
     file
   end
 
+  def trim_lines_and_remove_empty(input_list) do
+    input_list
+    |> Enum.map(&String.trim/1)
+    |> Enum.filter(fn el -> el !== "" end)
+  end
+
   def input_string_to_integer_list(input_str) do
     input_str
     |> String.split("\n")
-    |> Enum.map(&String.trim/1)
-    |> Enum.filter(fn el -> el !== "" end)
+    |> trim_lines_and_remove_empty()
     |> Enum.map(&String.to_integer/1)
   end
 end
