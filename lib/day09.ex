@@ -56,6 +56,30 @@ defmodule AdventOfCode.Day09 do
     |> Enum.any?(fn v -> v == true end)
   end
 
+  def solve_part2_with_prefix_sum_list(input, preamble_size \\ 25) do
+    numbers = preprocess_input(input)
+    goal = solve_part1(input, preamble_size)
+
+    {from, to} = find_contigiuous_prefix_ranges(numbers, goal) |> hd()
+
+    numbers
+    |> Enum.drop(from)
+    |> Enum.take(to - from + 1)
+    |> Enum.min_max()
+    |> Tuple.to_list()
+    |> Enum.sum()
+  end
+
+  def find_contigiuous_prefix_ranges(numbers, goal) do
+    prefixSumList = Enum.scan(numbers, 0, &(&1 + &2)) |> Enum.with_index()
+
+    for {x, i} <- prefixSumList,
+        {y, j} <- prefixSumList,
+        i < j,
+        y - x == goal,
+        do: {i, j}
+  end
+
   defp preprocess_input(input) do
     input
     |> String.split("\n", trim: true)
