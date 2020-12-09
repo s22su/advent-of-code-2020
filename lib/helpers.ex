@@ -8,6 +8,11 @@ defmodule AdventOfCode.Helpers do
     file
   end
 
+  def read_input(day) do
+    {:ok, file} = File.read("input_data/d#{day}.txt")
+    file
+  end
+
   def trim_lines_and_remove_empty(input_list) do
     input_list
     |> Enum.map(&String.trim/1)
